@@ -12,17 +12,19 @@ export default function AddRecipe({ history }) {
   const { auth } = useSelector((state) => ({ ...state }));
   const [recipeForm, setrecipeForm] = useState({
     title: "",
-    ingredient: "",
-    recipe: "",
+    recipeType:"Dinner",
+    ingredients: [],
+    instructions: [],
     image: "",
   });
-  useEffect(() => {}, [recipeForm]);
+  useEffect(() => { }, [recipeForm]);
 
   const [recipeFormErrors, setrecipeFormError] = useState({
-    titleErr: null,
-    ingredientErr: null,
-    recipeErr: null,
-    imageErr: null,
+    title: null,
+    recipeType:null,
+    ingredients: null,
+    instructions: null,
+    image: null,
   });
   const handleFormSubmit = async (e) => {
     console.log("in form submit");
@@ -45,45 +47,76 @@ export default function AddRecipe({ history }) {
       toast.error(err.response.data);
     }
   };
-  const handelFormChange = (e) => {
-    if (e.target.name === "ingredient") {
-      setrecipeForm({
-        ...recipeForm,
-        ingredient: e.target.value,
-      });
-      setrecipeFormError({
-        ...recipeFormErrors,
-        ingredientErr:
-          e.target.value.length === 0 ? "this filed is requird" : null,
-      });
-    } else if (e.target.name === "title") {
-      setrecipeForm({
-        ...recipeForm,
-        title: e.target.value,
-      });
-      setrecipeFormError({
-        ...recipeFormErrors,
-        titleErr: e.target.value.length === 0 ? "this filed is requird" : null,
-      });
-    } else if (e.target.name === "recipe") {
-      setrecipeForm({
-        ...recipeForm,
-        recipe: e.target.value,
-      });
-      setrecipeFormError({
-        ...recipeFormErrors,
-        recipeErr: e.target.value.length === 0 ? "this filed is requird" : null,
-      });
-    } else if (e.target.name === "image") {
-      setrecipeForm({
-        ...recipeForm,
-        image: e.target.value,
-      });
-      setrecipeFormError({
-        ...recipeFormErrors,
-        imageErr: e.target.value.length === 0 ? "this filed is requird" : null,
-      });
+  const handleAddField = (name) => {
+    setrecipeForm((prevState) => ({
+      ...prevState,
+      [name]: [...prevState[name], ''],
+    }));
+  }
+  const handleRemoveField = (name, index) => {
+    recipeForm[name].splice(index,1)
+    console.log(recipeForm)
+    setrecipeForm({...recipeForm})
+ }
+  const handelFormChange = (e,index=null) => {
+    // if (e.target.name === "ingredients") {
+    //   setrecipeForm({
+    //     ...recipeForm,
+    //     ingredients: e.target.value,
+    //   });
+    //   setrecipeFormError({
+    //     ...recipeFormErrors,
+    //     ingredientsErr:
+    //       e.target.value.length === 0 ? "this filed is requird" : null,
+    //   });
+    // } else if (e.target.name === "title") {
+    //   setrecipeForm({
+    //     ...recipeForm,
+    //     title: e.target.value,
+    //   });
+    //   setrecipeFormError({
+    //     ...recipeFormErrors,
+    //     titleErr: e.target.value.length === 0 ? "this filed is requird" : null,
+    //   });
+    // } else if (e.target.name === "instructions") {
+    //   setrecipeForm({
+    //     ...recipeForm,
+    //     recipe: e.target.value,
+    //   });
+    //   setrecipeFormError({
+    //     ...recipeFormErrors,
+    //     recipeErr: e.target.value.length === 0 ? "this filed is requird" : null,
+    //   });
+    // } else if (e.target.name === "image") {
+    //   setrecipeForm({
+    //     ...recipeForm,
+    //     image: e.target.value,
+    //   });
+    //   setrecipeFormError({
+    //     ...recipeFormErrors,
+    //     imageErr: e.target.value.length === 0 ? "this filed is requird" : null,
+    //   });
+    // }
+    const { name, value } = e.target;
+    const newRecipeData = { ...recipeForm };
+    const newRecipeDataErrors = { ...recipeFormErrors };
+    // Update the recipeData object
+
+    if (index !== null) {
+      newRecipeData[name][index] = value;
+    } else {
+      newRecipeData[name] = value;
     }
+
+    // Validate the input field
+    if (value.trim() === '') {
+      newRecipeDataErrors[name] = `Please enter a ${name}.`;
+    } else {
+      newRecipeDataErrors[name] = null;
+    }
+    setrecipeForm(newRecipeData)
+    setrecipeFormError(newRecipeDataErrors)
+    console.log(newRecipeData)
   };
   return (
     <>
@@ -106,6 +139,8 @@ export default function AddRecipe({ history }) {
             handelFormChange={handelFormChange}
             handleFormSubmit={handleFormSubmit}
             recipeForm={recipeForm}
+            handleAddField={handleAddField}
+            handleRemoveField={handleRemoveField}
             recipeFormErrors={recipeFormErrors}
           />
         </div>

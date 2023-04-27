@@ -14,8 +14,20 @@ export const getRecipesList = () => (dispatch) => {
       .catch((err) => console.log(err));
   };
 
+export const getRecipesByType = (params) => (dispatch) => {
+    console.log(params.recipeType,"recipeType.......>")
+    axiosInstance
+      .get(`/recipe/recipeType/${params.recipeType}`)
+      .then((res) =>
+        dispatch({
+          type: "GET_RECIPES_LIST",
+          payload: res.data,
+        })
+      )
+      .catch((err) => console.log(err));
+  };
   export const getRecipeDetails = (params) => (dispatch) => {
-    console.log(params.id);
+    console.log(params.id,"iddddddddddddddddddd");
     axiosInstance
       .get(`/recipe/${params.id}`)
       .then((res) =>

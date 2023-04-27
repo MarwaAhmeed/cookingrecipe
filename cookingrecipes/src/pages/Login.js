@@ -20,8 +20,10 @@ function Login() {
 });
 const handleFormSubmit=async (e)=>{
   e.preventDefault();
+  console.log(userForm)
   try{
     let res = await login(userForm)
+    console.log(res)
      if(res.data){
         //save user and token in localstorage
         window.localStorage.setItem("auth",JSON.stringify(res.data))
@@ -32,7 +34,8 @@ const handleFormSubmit=async (e)=>{
         });
         navigate("/");
       }
-    } catch (err) {
+  } catch (err) {
+    console.log(err)
       toast.error(err.response.data);
     }
   };

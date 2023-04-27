@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 
 
 export default function CardRecipe({recipe,removeRecipe}){
-    console.log(recipe)
     const { auth } = useSelector((state) => ({ ...state }));
     return(
      <div className="col-lg-3 col-md-6">

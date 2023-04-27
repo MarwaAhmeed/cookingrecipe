@@ -1,7 +1,8 @@
 import axios from "axios";
+  // baseURL: "https://cookingrecipes-serveer.herokuapp.com",
 
 export const axiosInstance = axios.create({
-  baseURL: "https://cookingrecipes-serveer.herokuapp.com",
+  baseURL: "http://localhost:5000"
 });
 
 // Add a request interceptor
@@ -10,6 +11,7 @@ axiosInstance.interceptors.request.use(
     return config;
   },
   function (error) {
+    console.log(error,"......>")
     return Promise.reject(error);
   }
 );
@@ -23,6 +25,7 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   function (error) {
+    console.log(error,".......2>")
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
     // Show ERROR Handler Message

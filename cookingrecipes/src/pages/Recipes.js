@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getRecipesList } from "../store/action/recipe";
+import { getRecipesByType, getRecipesList } from "../store/action/recipe";
 import CardRecipe from "../components/CardRecipe";
 import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import { deletrecipe } from "../store/action/recipe";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Header from "../components/Header";
 export default function Recipes() {
   let recipes = useSelector((state) => state.recipes.recipesList);
   const { auth } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
   let navigate = useNavigate();
-
+  const params = useParams();  
   const removeRecipe = (id) => {
     console.log(id);
     confirmAlert({
@@ -46,8 +46,15 @@ export default function Recipes() {
   };
 
   useEffect(() => {
-    dispatch(getRecipesList());
-  }, []);
+    if (params.recipeType) {
+      console.log(params.recipeType)
+      dispatch(getRecipesByType(params))
+    } else {
+      console.log("no type")
+      dispatch(getRecipesList());
+    }
+  }, [params.recipeType]);
+  console.log(recipes,"recipesssss")
   return (
     <>
       <Header />
@@ -74,6 +81,9 @@ export default function Recipes() {
        
         )}
         <div className="row mt-3">
+          <h4 className="fw-bold text-uppercase m-5 ps-5">
+            {params.recipeType? params.recipeType:"All Recipes"}
+          </h4>
           {recipes.map((recipe) => {
             return (
               <CardRecipe

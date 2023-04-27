@@ -7,8 +7,7 @@ const userRoute=require("./routes/user")
 require("dotenv").config()
 
 const app =express();
-
-const url=process.env.DB_URL||"mongodb+srv://marwa:marwa@cluster0.cou3g.mongodb.net/Cooking?retryWrites=true&w=majority";
+const url="mongodb+srv://marwa:marwa@cluster0.ibpggtz.mongodb.net/?retryWrites=true&w=majority";
 const port=process.env.PORT|| 5000;
 
 app.use(express.json());

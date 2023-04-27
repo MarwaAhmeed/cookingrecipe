@@ -4,10 +4,12 @@ const findOne = (id) => {
   return Recipe.findById(id);
 };
 
-const find = () => {
+const findAll = () => {
   return Recipe.find();
 };
-
+const findByRecipeType = (recipeType) => {
+  return Recipe.find({recipeType:recipeType})
+}
 const create = (body) => {
   return Recipe.create(body);
 };
@@ -24,7 +26,8 @@ const editOne = (id, body) => {
 module.exports = {
   create,
   findOne,
-  find,
+  findAll,
   delOne,
   editOne,
+  findByRecipeType
 };
